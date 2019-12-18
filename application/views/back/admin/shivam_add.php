@@ -1,0 +1,173 @@
+<div class="row">
+    <div class="col-md-12">
+        <?php
+            echo form_open(base_url() . 'admin/product/do_add/', array(
+                'class' => 'form-horizontal',
+                'method' => 'post',
+                'id' => 'product_add',
+                'enctype' => 'multipart/form-data'
+            ));
+        ?>
+            <!--Panel heading-->
+            <div class="panel-heading">
+                <div class="panel-control" style="float: left;">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a data-toggle="tab" href="#product_details"><?php echo translate('upload images'); ?></a>
+                        </li>
+                      <!--   <li>
+                            <a data-toggle="tab" href="#business_details"><?php echo translate('business_details'); ?></a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#customer_choice_options"><?php echo translate('customer_choice_options'); ?></a>
+                        </li> -->
+                    </ul>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="tab-base">
+                    <!--Tabs Content-->                    
+                    <div class="tab-content">
+                        <div id="product_details" class="tab-pane fade active in">
+        
+                            <div class="form-group btm_border">
+                                <h4 class="text-thin text-center"><?php echo translate('upload images'); ?></h4>                            
+                            </div>
+                                            
+                            <div class="form-group btm_border">
+                                <label class="col-sm-4 control-label" for="demo-hor-12"><?php echo translate('images');?></label>
+                                <div class="col-sm-6">
+                                <span class="pull-left btn btn-default btn-file"> <?php echo translate('choose_file');?>
+                                    <input type="file" multiple name="images[]" onchange="preview(this);" id="demo-hor-12" class="form-control required">
+                                    </span>
+                                    <br><br>
+                                    <span id="previewImg" ></span>
+                                </div>
+                            </div>
+                            
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-11">
+                        <span class="btn btn-purple btn-labeled fa fa-refresh pro_list_btn pull-right " 
+                            onclick="ajax_set_full('add','<?php echo translate('add_product'); ?>','<?php echo translate('successfully_added!'); ?>','shivam_add',''); "><?php echo translate('reset');?>
+                        </span>
+                    </div>
+                    
+                    <div class="col-md-1">
+                        <span class="btn btn-success btn-md btn-labeled fa fa-upload pull-right enterer" onclick="form_submit('shivam_add','<?php echo translate('product_has_been_uploaded!'); ?>');proceed('to_add');" ><?php echo translate('upload');?></span>
+                    </div>
+                    
+                </div>
+            </div>
+    
+        </form>
+    </div>
+</div>
+
+<script src="<?php $this->benchmark->mark_time(); echo base_url(); ?>template/back/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js">
+</script>
+
+<input type="hidden" id="option_count" value="-1">
+
+<script>
+    window.preview = function (input) {
+        if (input.files && input.files[0]) {
+            $("#previewImg").html('');
+            $(input.files).each(function () {
+                var reader = new FileReader();
+                reader.readAsDataURL(this);
+                reader.onload = function (e) {
+                    $("#previewImg").append("<div style='float:left;border:4px solid #303641;padding:5px;margin:5px;'><img height='80' src='" + e.target.result + "'></div>");
+                }
+            });
+        }
+    }
+
+    function other_forms(){}
+    
+
+    function option_count(type){
+        var count = $('#option_count').val();
+        if(type == 'add'){
+            count++;
+        }
+        if(type == 'reduce'){
+            count--;
+        }
+        $('#option_count').val(count);
+    }
+
+    function set_select(){
+        $('.demo-chosen-select').chosen();
+        $('.demo-cs-multiselect').chosen({width:'100%'});
+    }
+    
+    $(document).ready(function() {
+        set_select();
+        set_summer();
+        createColorpickers();
+    });
+
+    function other(){
+        set_select();
+        $('#sub').show('slow');
+    }
+
+
+
+    function createColorpickers() {
+    
+        $('.demo2').colorpicker({
+            format: 'rgba'
+        });
+        
+    }
+    
+    
+    $('body').on('click', '.rmo', function(){
+        $(this).parent().parent().remove();
+    });
+
+    $('body').on('click', '.rmon', function(){
+        var co = $(this).closest('.form-group').data('no');
+        $(this).parent().parent().remove();
+        if($(this).parent().parent().parent().html() == ''){
+            $(this).parent().parent().parent().html(''
+                +'   <input type="hidden" name="op_set'+co+'[]" value="none" >'
+            );
+        }
+    });
+
+    $('body').on('click', '.rms', function(){
+        $(this).parent().parent().remove();
+    });
+
+
+    $('body').on('click', '.rmc', function(){
+        $(this).parent().parent().remove();
+    });
+
+
+    $(document).ready(function() {
+        $("form").submit(function(e){
+            event.preventDefault();
+        });
+    });
+</script>
+
+<style>
+    .btm_border{
+        border-bottom: 1px solid #ebebeb;
+        padding-bottom: 15px;   
+    }
+</style>
+
+
+<!--Bootstrap Tags Input [ OPTIONAL ]-->
+
